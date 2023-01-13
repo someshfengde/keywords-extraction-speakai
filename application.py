@@ -4,7 +4,7 @@ from flask_restful import Api, Resource
 from flask import Flask
 
 # API
-from api.api_component import APIComponent
+from api.api_component import KeywordExtractionComponent
 
 # Logger Configuration
 logging.config.fileConfig('logging.ini')
@@ -23,7 +23,7 @@ class CheckHealth(Resource):
 api.add_resource(CheckHealth, '/health')
 
 # TODO: Add API Endpoint and Change component name
-api.add_resource(APIComponent, '/api-name')
+api.add_resource(KeywordExtractionComponent, '/keywords')
 
 if __name__ == '__main__':
     PORT = 5000

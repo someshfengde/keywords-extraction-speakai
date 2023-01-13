@@ -11,7 +11,7 @@ def component_logic(source):
     #########
     return ''
 
-class APIComponent(Resource):
+class KeywordExtractionComponent(Resource):
     @staticmethod
     def post():
         posted_data = dict(request.get_json())
