@@ -37,14 +37,23 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
     # sorting the frequency of each word
     sorted_wordfreq = dict(sorted(wordfreq.items(), key=lambda x: x[1], reverse=True))
 
-    output_dict = {} 
+    top_k_dict = {} 
     for i in range(top_k):
-        output_dict[list(sorted_wordfreq.keys())[i]] = list(sorted_wordfreq.values())[i]
+        top_k_dict[list(sorted_wordfreq.keys())[i]] = list(sorted_wordfreq.values())[i]
     
-    print(sorted_wordfreq)
-    # print(wordfreq)
+    output_dict = []
+    for idx, (key, val) in enumerate(top_k_dict.items()):
+        # finding the instances in which key appeared
+        tot_instances = []
+        for k in semantic_search_dict['transcript']:
+            if key in k['text']:
+                tot_instances.extend(k['instances'])
+        output_dict.append({"instances":tot_instances,
+                            'id':idx, 
+                            "name":key, 
+                            })
 
-    return ""#dict(semantic_search_dict['transcript'])
+    return {"keywords":output_dict}
 
 class KeywordExtractionComponent(Resource):
     @staticmethod
