@@ -20,27 +20,26 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
     Output: 
         :return: keywords frequency in python dictionary    
     """
-    print("semantic search json is:")
+    # combining all the texts from documents in one array. 
     text_array = [] 
     for key in semantic_search_dict['transcript']:
         text_array.append(key['text'])
-    # calculating the top k keywords from transcription object using python flask 
-    
-    # finding the frequency of each word
-    wordfreq = {}
-    total_scentence = " ".join(text_array)
 
     # finding the frequency of each word
+    wordfreq = {}
+    total_scentence = " ".join(text_array) # joining the string to get the string combined with all characters in doc
     for y in total_scentence.split():
         wordfreq[y] = total_scentence.count(y)
     
-    # sorting the frequency of each word
+    # sorting the frequency of each word in descending order
     sorted_wordfreq = dict(sorted(wordfreq.items(), key=lambda x: x[1], reverse=True))
 
+    # building the top_k dictionary ( here the default number is 10 we can change this number.)
     top_k_dict = {} 
     for i in range(top_k):
         top_k_dict[list(sorted_wordfreq.keys())[i]] = list(sorted_wordfreq.values())[i]
     
+    # building the output dictionary in requried format.
     output_dict = []
     for idx, (key, val) in enumerate(top_k_dict.items()):
         # finding the instances in which key appeared
@@ -50,7 +49,7 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
                 tot_instances.extend(k['instances'])
         output_dict.append({"instances":tot_instances,
                             'id':idx, 
-                            "name":key, 
+                            "name":key
                             })
 
     return {"keywords":output_dict}
@@ -58,14 +57,19 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
 class KeywordExtractionComponent(Resource):
     @staticmethod
     def get(): 
+        """
+            Defining get method over here just to get what are the outputs to the web UI. 
+            used the local file instead of the API call for debugging purposes.
+        """
         semantic_data = dict(pd.read_json("data/Semantic Search.json"))
-        print(semantic_data)
         response = get_keywords_frequency(semantic_data)
         return jsonify(response)
 
     @staticmethod
     def post():
-        print('asdkfl;ajsdl;fj')
+        """
+        Used the local file instead of the API call for debugging purposes. 
+        """
         # posted_data = dict(request.get_json())
 
         # requestId = posted_data['requestId']
@@ -86,7 +90,6 @@ class KeywordExtractionComponent(Resource):
         # if callbackUrl assigned then make a call and send results
         # if callbackUrl:
         #     post_request(callbackUrl, result)
-
         # logger.info("Finish: Request for _______", extra={
         #     'requestId': requestId, 'userId': userId, 'companyId': companyId})
         return response
