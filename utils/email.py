@@ -11,9 +11,9 @@ sendgrind_key = config['SENDGRID_KEY']
 def sendErrorEmail(error):
     message = Mail(
         from_email='no-reply@speakai.co',
-        # TODO: Add email address
-        to_emails=[''],
-        subject='Error: Python: Boilerplate',
+        # added my mail.
+        to_emails=['someshfengde@gmail.com'],
+        subject='Error: Python: keyword extraction project',
         html_content=f'<strong>Error:</strong> {error} <br/> '
     )
 
