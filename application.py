@@ -27,6 +27,6 @@ api.add_resource(KeywordExtractionComponent, '/keywords')
 
 if __name__ == '__main__':
     PORT = 5000
-    DEBUG_MODE = False
+    DEBUG_MODE = True
     logger.info('Server is running. ' + Version)
     application.run(port=PORT, debug=DEBUG_MODE)
