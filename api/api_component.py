@@ -19,6 +19,13 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
 
     Output: 
         :return: keywords frequency in python dictionary    
+
+
+    #TODO: 
+        [] remove most common occuring words 
+        [] Try implementing with TF-IDF
+        [] Explore Rake and graph based methods for keyword extraction
+        
     """
     # combining all the texts from documents in one array. 
     text_array = [] 
@@ -79,6 +86,10 @@ class KeywordExtractionComponent(Resource):
 
         # getting the locally downloaded JSON data from 
         source = dict(pd.read_json("data/Semantic Search.json")) # posted_data['source']
+
+
+
+
         # callbackUrl = posted_data['callbackUrl']
 
         # logger.info("Request for _______", extra={
