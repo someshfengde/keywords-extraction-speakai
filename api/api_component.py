@@ -2,12 +2,38 @@ from flask import jsonify, request
 from flask_restful import Resource
 import logging
 
+# using NLTK for removing stopwords
+import nltk 
+nltk.download('stopwords')
+from nltk.corpus import stopwords 
+
+
 # adding pandas (DEBUG LOCAL ONLY)
 import pandas as pd 
 
 
 from utils.requests import post_request
 logger = logging.getLogger('speakLogger')
+
+def detect_stopwords(words):
+    """
+    detect and removes the stopwords from list of words 
+
+    Input: 
+        words: list of words 
+    
+    Output: 
+        words_list : removed with stopwords
+    """
+    stop_words =set(stopwords.words('english'))
+    filtered_words = [x for x in words if x.lower() not in stop_words]
+    return filtered_words
+
+
+
+
+
+
 
 def get_keywords_frequency(semantic_search_dict, top_k = 10):
     """
@@ -22,7 +48,7 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
 
 
     #TODO: 
-        [] remove most common occuring words 
+        [x] remove most common occuring words 
         [] Try implementing with TF-IDF
         [] Explore Rake and graph based methods for keyword extraction
         
@@ -35,7 +61,8 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
     # finding the frequency of each word
     wordfreq = {}
     total_scentence = " ".join(text_array) # joining the string to get the string combined with all characters in doc
-    for y in total_scentence.split():
+    total_scentence_wo_sw = detect_stopwords(total_scentence.split()) 
+    for y in total_scentence_wo_sw:
         wordfreq[y] = total_scentence.count(y)
     
     # sorting the frequency of each word in descending order
@@ -54,7 +81,8 @@ def get_keywords_frequency(semantic_search_dict, top_k = 10):
         for k in semantic_search_dict['transcript']:
             if key in k['text']:
                 tot_instances.extend(k['instances'])
-        output_dict.append({"instances":tot_instances,
+        output_dict.append({
+                            #"instances":tot_instances,
                             'id':idx, 
                             "name":key
                             })
